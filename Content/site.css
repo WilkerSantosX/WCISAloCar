@@ -1,0 +1,126 @@
+/* @media screen and (max-width: 2000px) */
+@media screen and (max-width: 1400px) {
+	nav .brand-logo {
+		font-size: 1.1rem;
+	}		
+	span.badge.new {
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: #fff;
+		background-color: #26a69a;
+		float: right;
+		height: 39px;
+		padding: 8px;
+	}
+}
+
+/* @media screen and (max-width: 2001px) */
+@media screen and (min-width: 1401px) {
+	body {
+		margin: 30px;
+	}
+
+	/* span.badge {
+		min-width: 6rem;
+		padding: 0 6px;
+		margin-left: 14px;
+		text-align: center;
+		font-size: 1rem;
+		line-height: 28px;
+		height: 31px;
+		color: #757575;
+		float: left;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	} */
+
+	span.badge.new {
+		cursor: pointer;
+		font-weight: 600;
+		font-size: 1rem;
+		color: #fff;
+		background-color: #26a69a;
+		border-radius: 15px !important;
+		float: left;
+	}
+
+}
+
+.mais-locais{
+	background-color: rgba(100,150,200,.5) !important;
+}
+
+.button-wcis{
+	background-color: #fff;
+	border: solid;
+	color: red;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 12px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+.loading{
+	margin-top: 10%;
+}
+
+#map {
+	height: 550px;
+}
+
+.card .card-title.modal {
+	font-size: 27px;
+	font-weight: 600;
+	font-family: cursive;
+}
+
+.sidenav {
+    z-index: 1001;
+}
+
+.sidenav .user-view .background {
+    background: blueviolet;
+}
+
+nav {
+	background: blueviolet;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+.legenda{
+	background: #eceaed;
+	padding: 25px;
+}
+
+h5.legenda-title {
+    font-size: 1.64rem;
+    line-height: 110%;
+    margin: -0.906667rem 0 .656rem 0;
+}
+
+nav .brand-logo i, nav .brand-logo [class^="mdi-"], nav .brand-logo [class*="mdi-"], nav .brand-logo i.material-icons {
+    margin-left: 25px;
+}
+
+.button-agenda{
+	margin: 25px 25px 25px 25px
+}
+
+.info-agendado {
+    font-weight: 700;
+}
+
+.fale-conosco{
+	font-size: 44px !important;
+	cursor: pointer;
+}
+
+.icons-tab{
+	font-size: 40px !important;
+}

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>WCIS</title>
+
+	<!-- CSS -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<link type="text/css" rel="stylesheet" href="Content/materialize/materialize.min.css" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="Content/sweetalert2/sweetalert2.min.css" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="Content/site.css" media="screen,projection" />	
+	<link type="text/css" rel="stylesheet" href="Content/button.css" media="screen,projection" />	
+
+	<!-- Leaflet -->	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+	<!-- JS -->	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="Scripts/materialize/materialize.min.js"></script>
+	<script type="text/javascript" src="Scripts/moment/moment.js"></script>
+	<script type="text/javascript" src="Scripts/sweetalert2/sweetalert2.all.min.js"></script>
+	<script type="text/javascript" src="Scripts/app.js"></script>
+</head>
+
+<body>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#!" class="brand-logo">
+				<i class="material-icons prefix white-text">local_taxi</i>WCIS
+			</a>
+			<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+		</div>
+	</nav>
+	<ul class="sidenav" id="mobile-demo">
+		<li>
+			<div class="user-view">
+				<div class="background"></div>
+				<a href="#name">
+					<span class="white-text name"></span>
+					<span class="" id="username" style="display: none"></span>
+				</a>
+				<a href="#email">
+					<span class="white-text email" id="usermail"></span>
+				</a>
+			</div>
+		</li>		
+		<li><a class="modal-trigger"><i class="material-icons prefix">drive_eta</i>Solicitar carro</a></li>
+	</ul>
+
+
+	<div class="card">
+		<div class="card-content">
+			<div class="row">
+				<div class="col s12">
+				  <ul class="tabs">
+					<li class="tab col s4"><a href="#test1" class="active"><i class="material-icons icons-tab prefix">report</i></a></li>
+					<li class="tab col s4"><a href="#test2" onclick="IniciarMapa()"><i class="material-icons icons-tab prefix">public</i></a></li>
+					<li class="tab historico-div col s4"><a href="#test3"><i class="material-icons icons-tab prefix historico-div">today</i></a></li>
+					<!-- <li class="tab col s3"><a href="#test4">Test 4</a></li> -->
+				  </ul>
+				</div>
+				<div id="test1" class="col s12">
+					<div id="loading-main">
+						<div class="row">
+							<div class="col s12 m12 l12 center">
+								<div class="preloader-wrapper active loading">
+									<div class="spinner-layer spinner-red-only">
+									  <div class="circle-clipper left">
+										<div class="circle"></div>
+									  </div><div class="gap-patch">
+										<div class="circle"></div>
+									  </div><div class="circle-clipper right">
+										<div class="circle"></div>
+									  </div>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>
+
+					<div id="main" style="display: none;">
+						<br />
+						<h5 class="center">Dados de viagem</h5>
+						<br />
+						<div class="row">
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de origem" id="local-origem" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de origem</label>
+							</div>
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de destino" id="local-destino" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de destino</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_retirada" placeholder="16/07/2023 12:00" type="text" class="datepicker-de">
+								<label id="lblDataRetirada">Data Saída</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_retirada" type="text" class="timepicker-de">
+								<label id="lblHoraRetirada">Hora Saída</label>
+							</div>
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_devolucao" placeholder="16/07/2023 20:00" type="text" class="datepicker-ate">
+								<label>Data Retorno</label>
+							</div>
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_devolucao" type="text" class="timepicker-ate">
+								<label>Hora Retorno</label>
+							</div>
+							<div class="col s12 m12 l12 center">
+								<button class="button-17 red white-text" role="button" onclick="abrirFormRota('r1')"><i
+										class="material-icons">add_circle</i></button>
+							</div>
+						</div>
+				
+						<!--Formulários Hidden-->
+						<div class="row rota-adicional" id="r1" style="display: none;">
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de origem" id="local-origem" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de origem</label>
+							</div>
+				
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de destino" id="local-destino" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de destino</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_retirada" placeholder="16/07/2023 12:00" type="text" class="datepicker-de">
+								<label id="lblDataRetirada">Data Saída</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_retirada" type="text" class="timepicker-de">
+								<label id="lblHoraRetirada">Hora Saída</label>
+							</div>
+				
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_devolucao" placeholder="16/07/2023 20:00" type="text" class="datepicker-ate">
+								<label>Data Retorno</label>
+							</div>
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_devolucao" type="text" class="timepicker-ate">
+								<label>Hora Retorno</label>
+							</div>
+							<div class="col s12 m12 l12 center">
+								<button class="button-17 red white-text" role="button" onclick="abrirFormRota('r2')"><i
+										class="material-icons">add_circle</i></button>
+								<button class="button-17 red white-text" role="button" onclick="removerFormRota('r1')"><i
+										class="material-icons">delete</i></button>
+							</div>
+						</div>
+						<div class="row rota-adicional" id="r2" style="display: none;">
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de origem" id="local-origem" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de origem</label>
+							</div>
+				
+							<div class="input-field col s12">
+								<i class="material-icons prefix purple-text">place</i>
+								<input type="text" title="Local de destino" id="local-destino" value=" " class="autocomplete">
+								<label for="autocomplete-input">Local de destino</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_retirada" placeholder="16/07/2023 12:00" type="text" class="datepicker-de">
+								<label id="lblDataRetirada">Data Saída</label>
+							</div>
+							<div class="input-field col s12 m12 l2">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_retirada" type="text" class="timepicker-de">
+								<label id="lblHoraRetirada">Hora Saída</label>
+							</div>
+				
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="data_devolucao" placeholder="16/07/2023 20:00" type="text" class="datepicker-ate">
+								<label>Data Retorno</label>
+							</div>
+							<div class="input-field col s12 m12 l2 div-devolucao">
+								<i class="material-icons prefix purple-text">today</i>
+								<input id="hora_devolucao" type="text" class="timepicker-ate">
+								<label>Hora Retorno</label>
+							</div>
+							<div class="col s12 m12 l12 center">
+								<button class="button-17 red white-text" role="button" onclick="removerFormRota('r2')"><i
+										class="material-icons">delete</i></button>
+							</div>
+						</div>
+						<!------------------>
+				
+						<div class="row">
+							<div class="col s12 m12 l12 center" id="btn_acao">
+								<br>
+								<button id="salvar" class="button-17 green white-text" role="button">
+									<i class="material-icons">directions_car</i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="test2" class="col s12">
+					<br/>
+						<h5 class="center">Visão do Mapa</h5>
+						<div class="center">
+							<span class="center" id="loading-texto">Estamos processando os dados...</span>
+						</div>
+					<br/>
+
+					<div id="loading-mapa">
+						<div class="row">
+							<div class="col s12 m12 l12 center">
+								<div class="preloader-wrapper active loading">
+									<div class="spinner-layer spinner-red-only">
+									  <div class="circle-clipper left">
+										<div class="circle"></div>
+									  </div><div class="gap-patch">
+										<div class="circle"></div>
+									  </div><div class="circle-clipper right">
+										<div class="circle"></div>
+									  </div>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>					
+					<div id="map"></div>
+				</div>
+
+
+				<div id="test3" class="col s12">						
+					<div id="loading-historico">
+						<div class="row">
+							<div class="col s12 m12 l12 center">
+								<div class="preloader-wrapper active loading">
+									<div class="spinner-layer spinner-red-only">
+									  <div class="circle-clipper left">
+										<div class="circle"></div>
+									  </div><div class="gap-patch">
+										<div class="circle"></div>
+									  </div><div class="circle-clipper right">
+										<div class="circle"></div>
+									  </div>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</div>					
+
+					<div id="historico" style="display: none;">
+						<div class="row">
+							<div class="col s12 m12 l12 center">
+								<h5>Flitros</h5>
+							</div>
+							<div class="col s3 m3 l3 center">
+								<span>
+									<a href="#!" onclick="filtrarViagens('c-todos')">Todos</a>
+								</span>
+							</div>							
+							<div class="col s3 m3 l3 center">
+								<span>
+									<a href="#!" onclick="filtrarViagens('c-aberto')">Em aberto</a>
+								</span>
+							</div>
+							<div class="col s3 m3 l3 center">
+								<span>
+									<a href="#!" onclick="filtrarViagens('c-pendente')">Pendente</a>
+								</span>
+							</div>
+							<div class="col s3 m3 l3 center">
+								<span>
+									<a href="#!" onclick="filtrarViagens('c-encerrado')">Finalizado</a>
+								</span>
+							</div>
+						</div>
+						<div class="card c-aberto">
+							<div class="card-content">
+								<div class="card-title">
+									<span class="new badge green" data-badge-caption="Em aberto"></span><br>
+									<h5>Dados de sua viagem</h5>
+								</div>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Origem:</span> 
+									<span class="orange-text info-agendado">Casa - Condomínio Costa Verde - Estrada Manoel Lages do Chão, 850 Apto 52, Jardim Capiá, Cotia, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Destino:</span> 
+									<span class="orange-text info-agendado">Trabalho - Open Mail Patio Jaguaré - Av. Corifeu de Azevedo Marques, 569, Vila Lageado, Osasco, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Saída:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>						
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Retorno:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">person</i> 
+									<span>Motorista:</span> 
+									<span class="orange-text info-agendado">Wilker dos Santos <a>Ver foto</a></span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">directions_car</i> 
+									<span>Veículo:</span> 
+									<span class="orange-text info-agendado">ABC1234 <a>Ver foto</a></span> 
+								</p>											
+							</div>
+							<div class="card-action center">
+								<button class="button-17 red white-text" role="button" onclick="cancelarViagem()"><i class="material-icons">delete</i></button>
+							</div>
+						</div>
+						<div class="card c-pendente">
+							<div class="card-content">
+								<div class="card-title">
+									<span class="new badge orange" data-badge-caption="Pendente"></span><br>
+									<h5>Dados de sua viagem</h5>
+								</div>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Origem:</span> 
+									<span class="orange-text info-agendado">Casa - Condomínio Costa Verde - Estrada Manoel Lages do Chão, 850 Apto 52, Jardim Capiá, Cotia, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Destino:</span> 
+									<span class="orange-text info-agendado">Trabalho - Open Mail Patio Jaguaré - Av. Corifeu de Azevedo Marques, 569, Vila Lageado, Osasco, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Saída:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>						
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Retorno:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">person</i> 
+									<span>Motorista:</span> 
+									<span class="orange-text info-agendado"><a>Aguardando aprovação</a></span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">directions_car</i> 
+									<span>Veículo:</span> 
+									<span class="orange-text info-agendado"><a>Aguardando aprovação</a></span> 
+								</p>											
+							</div>
+							<div class="card-action">
+								<div class="card-action center">
+									<button class="button-17 red white-text" role="button" onclick="cancelarViagem()"><i class="material-icons">delete</i></button>
+								</div>
+							</div>
+						</div>
+						<div class="card c-encerrado">
+							<div class="card-content">
+								<div class="card-title">
+									<span class="new badge grey" data-badge-caption="Encerrado"></span><br>
+									<h5>Dados de sua viagem</h5>
+								</div>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Origem:</span> 
+									<span class="orange-text info-agendado">Casa - Condomínio Costa Verde - Estrada Manoel Lages do Chão, 850 Apto 52, Jardim Capiá, Cotia, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">place</i> 
+									<span>Destino:</span> 
+									<span class="orange-text info-agendado">Trabalho - Open Mail Patio Jaguaré - Av. Corifeu de Azevedo Marques, 569, Vila Lageado, Osasco, SP</span> 
+								</p>
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Saída:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>						
+								<p>
+									<i class="material-icons prefix purple-text">today</i> 
+									<span>Data/Hora Retorno:</span> 
+									<span class="orange-text info-agendado">19/07/2023 13:11</span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">person</i> 
+									<span>Motorista:</span> 
+									<span class="orange-text info-agendado">Wilker dos Santos <a>Ver foto</a></span> 
+								</p>	
+								<p>
+									<i class="material-icons prefix purple-text">directions_car</i> 
+									<span>Veículo:</span> 
+									<span class="orange-text info-agendado">ABC1234 <a>Ver foto</a></span> 
+								</p>											
+							</div>
+							<div class="card-action center">
+								<div class="row">
+									<div class="input-field col s12 m12 l12">
+										<a class="button-17 white-text" role="button" onclick="like()"><img src="Content/images/like.svg" width="30px" id="like"/></a>
+										<a class="button-17 white-text" role="button" onclick="dislike()"><img src="Content/images/dislike.svg" width="30px" id="dislike"/></a>
+										<a class="button-17" role="button"><i class="material-icons black-text" onclick="openFeedback()">chat</i></a>		
+									</div>
+								</div>								
+								<div class="row" id="comentario" style="display: none;">
+									<div class="input-field col s12 m12 l12">
+										<textarea id="textarea1" class="materialize-textarea"></textarea>
+										<label for="textarea1">Nos dê sua avaliação e sugestão</label>
+									</div>
+									<div class="input-field col s12 m12 l12">
+										<button class="button-17 green white-text" role="button">
+											salvar
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div id="test4" class="col s12">Test 4</div> -->
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>
